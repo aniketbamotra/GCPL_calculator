@@ -1,0 +1,55 @@
+/* Custom styles for GCPL Calculators - Light Mode */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #22c55eaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #22c55eaa);
+}
+
+/* Ensure proper text color inheritance for select components in light mode */
+[data-radix-select-content] {
+  color: #374151 !important;
+  background-color: white !important;
+}
+
+[data-radix-select-item] {
+  color: #374151 !important;
+}
+
+[data-radix-select-item]:hover {
+  background-color: #f0fdf4 !important;
+  color: #15803d !important;
+}
+
+/* Custom scrollbar for light theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Focus states for better accessibility */
+.focus\:ring-green-accent-500:focus {
+  --tw-ring-color: #22c55e;
+}
+
+.focus\:border-green-accent-500:focus {
+  border-color: #22c55e;
+}
