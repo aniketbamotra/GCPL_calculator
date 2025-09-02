@@ -47,102 +47,95 @@ export function VolumeCalculator() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 gap-6">
-              {/* Length */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Length [m]
-                </Label>
-                <Input
-                  type="number"
-                  value={length}
-                  onChange={(e) => setLength(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                  step="0.01"
-                />
-              </div>
-
-              {/* Width / Crack opening */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Width / Crack opening [cm] *you can use numbers after the decimal point, such as 0.01cm
-                </Label>
-                <Input
-                  type="number"
-                  value={width}
-                  onChange={(e) => setWidth(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                  step="0.01"
-                />
-              </div>
-
-              {/* Height / Thickness */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Height / Thickness of masonry [cm]
-                </Label>
-                <Input
-                  type="number"
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                  step="0.01"
-                />
-              </div>
-
-              {/* Total Volume Result */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Total
-                </Label>
-                <div className="flex items-center mt-auto">
-                  <Input
-                    value={results.totalVolume.toFixed(2)}
-                    readOnly
-                    className="bg-white border-green-accent-300 text-gray-900 font-medium"
-                  />
-                  <span className="ml-2 text-gray-700 font-medium">L</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Results Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Results:</h3>
+            {/* Main Layout: Inputs Left, Outputs Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              {/* Volume Details */}
-              <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200 mb-6">
-                <h4 className="text-md font-medium text-gray-900 mb-3">Volume Calculation</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Total volume [L]</Label>
-                    <Input
-                      value={results.totalVolume.toFixed(2)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Total volume [cm³]</Label>
-                    <Input
-                      value={(results.totalVolume * 1000).toFixed(0)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
+              {/* Left Side - Input Fields */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Input Parameters
+                </h3>
+                
+                {/* Length */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Length [m]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={length}
+                    onChange={(e) => setLength(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                    step="0.01"
+                  />
+                </div>
+
+                {/* Width / Crack opening */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Width / Crack opening [cm] *you can use numbers after the decimal point, such as 0.01cm
+                  </Label>
+                  <Input
+                    type="number"
+                    value={width}
+                    onChange={(e) => setWidth(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                    step="0.01"
+                  />
+                </div>
+
+                {/* Height / Thickness */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Height / Thickness of masonry [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={height}
+                    onChange={(e) => setHeight(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                    step="0.01"
+                  />
                 </div>
               </div>
-            </div>
 
-            {/* Summary Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary:</h3>
-              <div className="grid grid-cols-1 gap-4">
+              {/* Right Side - Output Results */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Calculation Results
+                </h3>
+
+                {/* Volume Details */}
+                <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Volume Calculation</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Total volume [L]</Label>
+                      <Input
+                        value={results.totalVolume.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Total volume [cm³]</Label>
+                      <Input
+                        value={(results.totalVolume * 1000).toFixed(0)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Summary Results */}
                 <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Final Summary</h4>
                   <div className="flex flex-col h-16">
                     <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL VOLUME REQUIRED [L]</Label>
                     <Input

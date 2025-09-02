@@ -91,122 +91,127 @@ export function FoundationCalculator() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 gap-6">
-              {/* Wall thickness */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Wall thickness [cm]
-                </Label>
-                <Input
-                  type="number"
-                  value={wallThickness}
-                  onChange={(e) => setWallThickness(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="e.g 10"
-                  step="0.01"
-                />
-              </div>
-
-              {/* Distance to underside of foundation */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Distance to underside of foundation [cm]
-                </Label>
-                <Input
-                  type="number"
-                  value={distanceToFoundation}
-                  onChange={(e) => setDistanceToFoundation(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="e.g 10"
-                  step="0.01"
-                />
-              </div>
-
-              {/* Depth under foundation */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  To what depth under the foundation to insert the lances [cm]
-                </Label>
-                <Input
-                  type="number"
-                  value={depthUnderFoundation}
-                  onChange={(e) => setDepthUnderFoundation(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="e.g 10"
-                  step="0.01"
-                />
-              </div>
-            </div>
-
-            {/* Results Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Results:</h3>
+            {/* Main Layout: Inputs Left, Outputs Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              {/* Results for each angle */}
-              <div className="space-y-4">
-                {results.angleResults.map((result) => (
-                  <div key={result.angle} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Angle</Label>
-                        <Input
-                          value={result.angle}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from wall [cm]</Label>
-                        <Input
-                          value={result.distanceFromWall.toFixed(1)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Length of lance in soil and foundation</Label>
-                        <Input
-                          value={result.lengthInSoilAndFoundation.toFixed(1)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Lance length in the foundation</Label>
-                        <Input
-                          value={result.lengthInFoundation.toFixed(1)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Length of lance in the ground</Label>
-                        <Input
-                          value={result.lengthInGround.toFixed(1)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
+              {/* Left Side - Input Fields */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Input Parameters
+                </h3>
+                
+                {/* Wall thickness */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Wall thickness [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={wallThickness}
+                    onChange={(e) => setWallThickness(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="e.g 10"
+                    step="0.01"
+                  />
+                </div>
+
+                {/* Distance to underside of foundation */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Distance to underside of foundation [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={distanceToFoundation}
+                    onChange={(e) => setDistanceToFoundation(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="e.g 10"
+                    step="0.01"
+                  />
+                </div>
+
+                {/* Depth under foundation */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    To what depth under the foundation to insert the lances [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={depthUnderFoundation}
+                    onChange={(e) => setDepthUnderFoundation(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="e.g 10"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              {/* Right Side - Output Results */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Calculation Results
+                </h3>
+                
+                {/* Results for each angle */}
+                <div className="space-y-4">
+                  {results.angleResults.map((result) => (
+                    <div key={result.angle} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                      <h4 className="text-md font-medium text-gray-900 mb-3">Angle {result.angle}°</h4>
+                      <div className="space-y-3">
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from wall [cm]</Label>
+                          <Input
+                            value={result.distanceFromWall.toFixed(1)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Length of lance in soil and foundation</Label>
+                          <Input
+                            value={result.lengthInSoilAndFoundation.toFixed(1)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Lance length in the foundation</Label>
+                          <Input
+                            value={result.lengthInFoundation.toFixed(1)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Length of lance in the ground</Label>
+                          <Input
+                            value={result.lengthInGround.toFixed(1)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  ))}
+                </div>
 
-            {/* Summary Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary:</h3>
-              <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
-                <p className="text-gray-700 text-sm">
-                  <strong>Foundation Parameters:</strong> Wall thickness: {wallThickness || '0'} cm, 
-                  Distance to foundation: {distanceToFoundation || '0'} cm, 
-                  Depth under foundation: {depthUnderFoundation || '0'} cm
-                </p>
-                <p className="text-gray-700 text-sm mt-2">
-                  <strong>Available Angles:</strong> Choose from 15°, 30°, 45°, 60°, 75°, 80°, or 85° 
-                  based on your site conditions and drilling requirements.
-                </p>
+                {/* Summary */}
+                <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Foundation Parameters Summary</h4>
+                  <div className="space-y-2">
+                    <p className="text-gray-700 text-sm">
+                      <strong>Wall thickness:</strong> {wallThickness || '0'} cm
+                    </p>
+                    <p className="text-gray-700 text-sm">
+                      <strong>Distance to foundation:</strong> {distanceToFoundation || '0'} cm
+                    </p>
+                    <p className="text-gray-700 text-sm">
+                      <strong>Depth under foundation:</strong> {depthUnderFoundation || '0'} cm
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 

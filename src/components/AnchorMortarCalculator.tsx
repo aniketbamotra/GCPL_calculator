@@ -17,9 +17,6 @@ export function AnchorMortarCalculator() {
   const [anchorDiameter, setAnchorDiameter] = useState<string>('8')
   const [distanceBetweenAnchors, setDistanceBetweenAnchors] = useState<string>('10')
   const [numberOfCracks, setNumberOfCracks] = useState<string>('10')
-  const [grooveWidth, setGrooveWidth] = useState<string>('12')
-  const [grooveDepth, setGrooveDepth] = useState<string>('35')
-  const [totalAnchorLength, setTotalAnchorLength] = useState<string>('100')
   
   const [results, setResults] = useState<CalculationResults>({
     grooveWidth: 0,
@@ -82,11 +79,6 @@ export function AnchorMortarCalculator() {
   useEffect(() => {
     const newResults = calculateResults()
     setResults(newResults)
-    
-    // Update the display fields
-    setGrooveWidth(newResults.grooveWidth.toString())
-    setGrooveDepth(newResults.grooveDepth.toString())
-    setTotalAnchorLength(newResults.totalAnchorLength.toString())
   }, [materialType, anchorDiameter, distanceBetweenAnchors, numberOfCracks])
 
   return (
@@ -100,315 +92,145 @@ export function AnchorMortarCalculator() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Type of material */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Type of material
-                </Label>
-                <Select value={materialType} onValueChange={setMaterialType}>
-                  <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="brick">Brick and others</SelectItem>
-                    <SelectItem value="concrete">Concrete</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {materialType === 'brick' && (
-                <>
-                  {/* Spiral anchor diameter */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Spiral anchor diameter [mm]
-                    </Label>
-                    <Select value={anchorDiameter} onValueChange={setAnchorDiameter}>
-                      <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-gray-200">
-                        <SelectItem value="6">6</SelectItem>
-                        <SelectItem value="8">8</SelectItem>
-                        <SelectItem value="10">10</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Groove width */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Groove width [mm]
-                    </Label>
-                    <Input
-                      value={grooveWidth}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-
-                  {/* Groove depth */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Groove depth [mm]
-                    </Label>
-                    <Input
-                      value={grooveDepth}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-
-                  {/* Total anchor length */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Total anchor length (perpendicular to the crack - dependent on material) [cm]
-                    </Label>
-                    <Input
-                      value={totalAnchorLength}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-
-                  {/* Distance between anchors */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Distance between anchors (range 30-45cm) [cm]
-                    </Label>
-                    <Input
-                      type="number"
-                      value={distanceBetweenAnchors}
-                      onChange={(e) => setDistanceBetweenAnchors(e.target.value)}
-                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                      placeholder="eg. 10"
-                    />
-                  </div>
-
-                  {/* Number of m/b masonry cracks */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Number of m/b masonry cracks
-                    </Label>
-                    <Input
-                      type="number"
-                      value={numberOfCracks}
-                      onChange={(e) => setNumberOfCracks(e.target.value)}
-                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                      placeholder="eg. 10"
-                    />
-                  </div>
-
-                  {/* Number of m/b anchor */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Number of m/b anchor
-                    </Label>
-                    <Input
-                      value={results.numberOfAnchors.toFixed(0)}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-                </>
-              )}
-
-              {materialType === 'concrete' && (
-                <>
-                  {/* Distance between anchors */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Distance between anchors (range 30-45cm) [cm]
-                    </Label>
-                    <Input
-                      type="number"
-                      value={distanceBetweenAnchors}
-                      onChange={(e) => setDistanceBetweenAnchors(e.target.value)}
-                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                      placeholder="10"
-                    />
-                  </div>
-
-                  {/* Number of m/b masonry cracks */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Number of m/b masonry cracks
-                    </Label>
-                    <Input
-                      type="number"
-                      value={numberOfCracks}
-                      onChange={(e) => setNumberOfCracks(e.target.value)}
-                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                      placeholder="10"
-                    />
-                  </div>
-
-                  {/* Total anchor length */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Total anchor length (perpendicular to the crack - dependent on material) [cm]
-                    </Label>
-                    <Input
-                      value={totalAnchorLength}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-
-                  {/* Spiral anchor diameter */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Spiral anchor diameter [mm]
-                    </Label>
-                    <Select value={anchorDiameter} onValueChange={setAnchorDiameter}>
-                      <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-gray-200">
-                        <SelectItem value="6">6</SelectItem>
-                        <SelectItem value="8">8</SelectItem>
-                        <SelectItem value="10">10</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Groove width */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Groove width [mm]
-                    </Label>
-                    <Input
-                      value={grooveWidth}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-
-                  {/* Groove depth */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Groove depth [mm]
-                    </Label>
-                    <Input
-                      value={grooveDepth}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-
-                  {/* Number of m/b anchor */}
-                  <div className="flex flex-col h-20">
-                    <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                      Number of m/b anchor
-                    </Label>
-                    <Input
-                      value={results.numberOfAnchors.toFixed(0)}
-                      readOnly
-                      className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Results Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Results:</h3>
+            {/* Main Layout: Inputs Left, Outputs Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              {/* Anchor Details */}
-              <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200 mb-6">
-                <h4 className="text-md font-medium text-gray-900 mb-3">Anchor Specifications</h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Groove width [mm]</Label>
-                    <Input
-                      value={results.grooveWidth.toFixed(0)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Groove depth [mm]</Label>
-                    <Input
-                      value={results.grooveDepth.toFixed(0)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Total anchor length [cm]</Label>
-                    <Input
-                      value={results.totalAnchorLength.toFixed(0)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Number of anchors [pcs]</Label>
-                    <Input
-                      value={results.numberOfAnchors.toFixed(0)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
+              {/* Left Side - Input Fields */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Input Parameters
+                </h3>
+                
+                {/* Type of material */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Type of material
+                  </Label>
+                  <Select value={materialType} onValueChange={setMaterialType}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="brick">Brick and others</SelectItem>
+                      <SelectItem value="concrete">Concrete</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Spiral anchor diameter */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Spiral anchor diameter [mm]
+                  </Label>
+                  <Select value={anchorDiameter} onValueChange={setAnchorDiameter}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="6">6</SelectItem>
+                      <SelectItem value="8">8</SelectItem>
+                      <SelectItem value="10">10</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Distance between anchors */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Distance between anchors (range 30-45cm) [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={distanceBetweenAnchors}
+                    onChange={(e) => setDistanceBetweenAnchors(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="eg. 10"
+                  />
+                </div>
+
+                {/* Number of m/b masonry cracks */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Number of m/b masonry cracks
+                  </Label>
+                  <Input
+                    type="number"
+                    value={numberOfCracks}
+                    onChange={(e) => setNumberOfCracks(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="eg. 10"
+                  />
                 </div>
               </div>
 
-              {/* Material Consumption */}
-              <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200 mb-6">
-                <h4 className="text-md font-medium text-gray-900 mb-3">Material Consumption</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Mortar [kg]</Label>
-                    <div className="flex items-center mt-auto">
+              {/* Right Side - Output Results */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Calculation Results
+                </h3>
+
+                {/* Anchor Specifications */}
+                <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Anchor Specifications</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Groove width [mm]</Label>
                       <Input
-                        value={results.mortarQuantity.toFixed(1)}
+                        value={results.grooveWidth.toFixed(0)}
                         readOnly
-                        className="bg-white border-green-accent-300 text-gray-900 font-medium"
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
                       />
-                      <span className="ml-2 text-gray-700 font-medium">kg</span>
                     </div>
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Spiral anchors required [pcs]</Label>
-                    <div className="flex items-center mt-auto">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Groove depth [mm]</Label>
+                      <Input
+                        value={results.grooveDepth.toFixed(0)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Total anchor length [cm]</Label>
+                      <Input
+                        value={results.totalAnchorLength.toFixed(0)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Number of anchors [pcs]</Label>
                       <Input
                         value={results.numberOfAnchors.toFixed(0)}
                         readOnly
-                        className="bg-white border-green-accent-300 text-gray-900 font-medium"
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
                       />
-                      <span className="ml-2 text-gray-700 font-medium">pcs</span>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Summary Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary:</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Material Consumption */}
                 <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL MORTAR REQUIRED [KG]</Label>
-                    <Input
-                      value={results.mortarQuantity.toFixed(1)}
-                      readOnly
-                      className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
-                    />
-                  </div>
-                </div>
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Final Summary</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL MORTAR REQUIRED [KG]</Label>
+                      <Input
+                        value={results.mortarQuantity.toFixed(1)}
+                        readOnly
+                        className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
+                      />
+                    </div>
 
-                <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL SPIRAL ANCHORS [PCS]</Label>
-                    <Input
-                      value={results.numberOfAnchors.toFixed(0)}
-                      readOnly
-                      className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
-                    />
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL SPIRAL ANCHORS [PCS]</Label>
+                      <Input
+                        value={results.numberOfAnchors.toFixed(0)}
+                        readOnly
+                        className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

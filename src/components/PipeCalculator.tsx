@@ -66,58 +66,50 @@ export function PipeCalculator() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-            {/* Pipe Volume Section */}
-            <div className="grid grid-cols-1 gap-6">
-              <h3 className="text-lg font-semibold text-gray-900">Pipe Volume</h3>
+            {/* Main Layout: Inputs Left, Outputs Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              {/* Pipe diameter */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Specify the diameter of the pipe [cm]
-                </Label>
-                <Input
-                  type="number"
-                  value={pipeDiameter}
-                  onChange={(e) => setPipeDiameter(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                  step="0.01"
-                />
-              </div>
-
-              {/* Pipe length */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Specify the length of the pipe [cm]
-                </Label>
-                <Input
-                  type="number"
-                  value={pipeLength}
-                  onChange={(e) => setPipeLength(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                  step="0.01"
-                />
-              </div>
-
-              {/* Pipe volume result */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Pipe volume [L]
-                </Label>
-                <Input
-                  value={results.pipeVolume.toFixed(2)}
-                  readOnly
-                  className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                />
-              </div>
-            </div>
-
-            {/* Culvert Volume Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <div className="grid grid-cols-1 gap-6">
-                <h3 className="text-lg font-semibold text-gray-900">Volume of the culvert</h3>
+              {/* Left Side - Input Fields */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Input Parameters
+                </h3>
                 
+                <h4 className="text-md font-semibold text-gray-900">Pipe Parameters</h4>
+                
+                {/* Pipe diameter */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Specify the diameter of the pipe [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={pipeDiameter}
+                    onChange={(e) => setPipeDiameter(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                    step="0.01"
+                  />
+                </div>
+
+                {/* Pipe length */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Specify the length of the pipe [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={pipeLength}
+                    onChange={(e) => setPipeLength(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                    step="0.01"
+                  />
+                </div>
+
+                <h4 className="text-md font-semibold text-gray-900 mt-6">Culvert Parameters</h4>
+
                 {/* Culvert inside diameter */}
                 <div className="flex flex-col h-20">
                   <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
@@ -147,74 +139,49 @@ export function PipeCalculator() {
                     step="0.01"
                   />
                 </div>
-
-                {/* Culvert volume result */}
-                <div className="flex flex-col h-20">
-                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                    Volume of the culvert [L]
-                  </Label>
-                  <Input
-                    value={results.culvertVolume.toFixed(2)}
-                    readOnly
-                    className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                  />
-                </div>
-
-                {/* Volume needed to fill */}
-                <div className="flex flex-col h-20">
-                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                    Volume needed to fill the culvert [L]
-                  </Label>
-                  <Input
-                    value={results.volumeToFill.toFixed(2)}
-                    readOnly
-                    className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                  />
-                </div>
               </div>
-            </div>
 
-            {/* Results Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Results:</h3>
-              
-              {/* Volume Details */}
-              <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200 mb-6">
-                <h4 className="text-md font-medium text-gray-900 mb-3">Volume Calculations</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Pipe volume [L]</Label>
-                    <Input
-                      value={results.pipeVolume.toFixed(2)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Culvert volume [L]</Label>
-                    <Input
-                      value={results.culvertVolume.toFixed(2)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Volume to fill [L]</Label>
-                    <Input
-                      value={results.volumeToFill.toFixed(2)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
+              {/* Right Side - Output Results */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Calculation Results
+                </h3>
+
+                {/* Volume Calculations */}
+                <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Volume Calculations</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Pipe volume [L]</Label>
+                      <Input
+                        value={results.pipeVolume.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Volume of the culvert [L]</Label>
+                      <Input
+                        value={results.culvertVolume.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Volume needed to fill the culvert [L]</Label>
+                      <Input
+                        value={results.volumeToFill.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Summary Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary:</h3>
-              <div className="grid grid-cols-1 gap-4">
+                {/* Summary Results */}
                 <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Final Summary</h4>
                   <div className="flex flex-col h-16">
                     <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL VOLUME TO FILL [L]</Label>
                     <Input

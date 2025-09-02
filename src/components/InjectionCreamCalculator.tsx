@@ -98,152 +98,161 @@ export function InjectionCreamCalculator() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Wall thickness */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Wall thickness [cm]
-                </Label>
-                <Input
-                  type="number"
-                  value={wallThickness}
-                  onChange={(e) => setWallThickness(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                />
-              </div>
-
-              {/* Wall length */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Wall length [m]
-                </Label>
-                <Input
-                  type="number"
-                  value={wallLength}
-                  onChange={(e) => setWallLength(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                />
-              </div>
-
-              {/* Drilling depth */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Drilling depth [cm]
-                </Label>
-                <Input
-                  value={results.drillingDepth.toFixed(2)}
-                  readOnly
-                  className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6">
-              {/* Drill diameter */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Drill diameter 12 / 14 (selectable)
-                </Label>
-                <Select value={drillDiameter} onValueChange={setDrillDiameter}>
-                  <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="12">12</SelectItem>
-                    <SelectItem value="14">14</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Injection hole shorter than wall */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Injection hole shorter than wall 2-4cm (range)
-                </Label>
-                <Input
-                  type="number"
-                  value={holeShortage}
-                  onChange={handleHoleShortageChange}
-                  className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto ${
-                    validationError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-                  }`}
-                  placeholder="Np. 3"
-                  min="2"
-                  max="4"
-                  step="0.1"
-                />
-                {validationError && (
-                  <p className="text-red-500 text-xs mt-1">{validationError}</p>
-                )}
-              </div>
-
-              {/* Spacing of injection holes */}
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Spacing of injection holes every [cm]
-                </Label>
-                <Input
-                  value={holeSpacing}
-                  readOnly
-                  className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
-                />
-              </div>
-            </div>
-
-            {/* Results Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Results:</h3>
+            {/* Main Layout: Inputs Left, Outputs Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              {/* Cream Consumption */}
-              <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200 mb-6">
-                <h4 className="text-md font-medium text-gray-900 mb-3">Material Consumption</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Cream consumption [L]</Label>
-                    <Input
-                      value={results.creamConsumptionL.toFixed(2)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Cream consumption [kg]</Label>
-                    <Input
-                      value={results.creamConsumptionKg.toFixed(2)}
-                      readOnly
-                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                    />
-                  </div>
+              {/* Left Side - Input Fields */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Input Parameters
+                </h3>
+                
+                {/* Wall thickness */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Wall thickness [cm]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={wallThickness}
+                    onChange={(e) => setWallThickness(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                  />
+                </div>
+
+                {/* Wall length */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Wall length [m]
+                  </Label>
+                  <Input
+                    type="number"
+                    value={wallLength}
+                    onChange={(e) => setWallLength(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                  />
+                </div>
+
+                {/* Drill diameter */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Drill diameter 12 / 14 (selectable)
+                  </Label>
+                  <Select value={drillDiameter} onValueChange={setDrillDiameter}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="12">12</SelectItem>
+                      <SelectItem value="14">14</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Injection hole shorter than wall */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Injection hole shorter than wall 2-4cm (range)
+                  </Label>
+                  <Input
+                    type="number"
+                    value={holeShortage}
+                    onChange={handleHoleShortageChange}
+                    className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto ${
+                      validationError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                    }`}
+                    placeholder="Np. 3"
+                    min="2"
+                    max="4"
+                    step="0.1"
+                  />
+                  {validationError && (
+                    <p className="text-red-500 text-xs mt-1">{validationError}</p>
+                  )}
+                </div>
+
+                {/* Spacing of injection holes */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Spacing of injection holes every [cm]
+                  </Label>
+                  <Input
+                    value={holeSpacing}
+                    readOnly
+                    className="bg-gray-50 border-gray-300 text-gray-900 mt-auto"
+                  />
                 </div>
               </div>
-            </div>
 
-            {/* Summary Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary:</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
+              {/* Right Side - Output Results */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Calculation Results
+                </h3>
+
+                {/* Drilling Parameters */}
+                <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Drilling Parameters</h4>
                   <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL CREAM CONSUMPTION [L]</Label>
+                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                      Drilling depth [cm]
+                    </Label>
                     <Input
-                      value={results.creamConsumptionL.toFixed(2)}
+                      value={results.drillingDepth.toFixed(2)}
                       readOnly
-                      className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
+                      className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
                     />
                   </div>
                 </div>
 
+                {/* Material Consumption */}
+                <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Material Consumption</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Cream consumption [L]</Label>
+                      <Input
+                        value={results.creamConsumptionL.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Cream consumption [kg]</Label>
+                      <Input
+                        value={results.creamConsumptionKg.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Summary Results */}
                 <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
-                  <div className="flex flex-col h-16">
-                    <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL CREAM CONSUMPTION [KG]</Label>
-                    <Input
-                      value={results.creamConsumptionKg.toFixed(2)}
-                      readOnly
-                      className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
-                    />
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Final Summary</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL CREAM CONSUMPTION [L]</Label>
+                      <Input
+                        value={results.creamConsumptionL.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
+                      />
+                    </div>
+
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">TOTAL CREAM CONSUMPTION [KG]</Label>
+                      <Input
+                        value={results.creamConsumptionKg.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-400 text-gray-900 font-bold mt-auto"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

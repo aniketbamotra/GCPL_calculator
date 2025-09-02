@@ -139,166 +139,153 @@ export function JointDrillingCalculator() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="flex flex-col h-20">
-                <Label htmlFor="wallThickness" className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Wall thickness [cm]
-                </Label>
-                <Input
-                  id="wallThickness"
-                  type="number"
-                  step="0.1"
-                  value={wallThickness}
-                  onChange={(e) => setWallThickness(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="e.g. 10"
-                />
-              </div>
-
-              <div className="flex flex-col h-20">
-                <Label htmlFor="floorThickness" className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Floor thickness [cm]
-                </Label>
-                <Input
-                  id="floorThickness"
-                  type="number"
-                  step="0.1"
-                  value={floorThickness}
-                  onChange={(e) => setFloorThickness(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="e.g. 10"
-                />
-              </div>
-
-              <div className="flex flex-col h-20">
-                <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Drilling % (selectable) - [ 50% wall / 40% wall / 30% wall ]
-                </Label>
-                <Select value={drillingPercentage} onValueChange={setDrillingPercentage}>
-                  <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="30">30</SelectItem>
-                    <SelectItem value="40">40</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* DRILL INTO THE WALL Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
-                DRILL INTO THE WALL
-              </h3>
+            {/* Main Layout: Inputs Left, Outputs Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              <div className="space-y-4">
-                {wallResults.map((result, index) => (
-                  <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Drill above floor [cm]
-                        </Label>
-                        <Input
-                          value={result.drillAboveFloor.toFixed(1)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Drill hole angle [°]
-                        </Label>
-                        <Input
-                          value={result.drillAngle.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Drilling depth [cm]
-                        </Label>
-                        <Input
-                          value={result.drillingDepth.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Place packer at depth [cm]
-                        </Label>
-                        <Input
-                          value={result.packerDepth.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
+              {/* Left Side - Input Fields */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Input Parameters
+                </h3>
+                
+                <div className="flex flex-col h-20">
+                  <Label htmlFor="wallThickness" className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Wall thickness [cm]
+                  </Label>
+                  <Input
+                    id="wallThickness"
+                    type="number"
+                    step="0.1"
+                    value={wallThickness}
+                    onChange={(e) => setWallThickness(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="e.g. 10"
+                  />
+                </div>
+
+                <div className="flex flex-col h-20">
+                  <Label htmlFor="floorThickness" className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Floor thickness [cm]
+                  </Label>
+                  <Input
+                    id="floorThickness"
+                    type="number"
+                    step="0.1"
+                    value={floorThickness}
+                    onChange={(e) => setFloorThickness(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="e.g. 10"
+                  />
+                </div>
+
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Drilling % (selectable) - [ 50% wall / 40% wall / 30% wall ]
+                  </Label>
+                  <Select value={drillingPercentage} onValueChange={setDrillingPercentage}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="30">30</SelectItem>
+                      <SelectItem value="40">40</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Right Side - Output Results */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Calculation Results
+                </h3>
+
+                {/* DRILL INTO THE WALL Section */}
+                <div className="space-y-4">
+                  <h4 className="text-md font-semibold text-gray-900 mb-3">DRILL INTO THE WALL</h4>
+                  {wallResults.map((result, index) => (
+                    <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                      <h5 className="text-sm font-medium text-gray-900 mb-3">Angle {result.drillAngle}°</h5>
+                      <div className="grid grid-cols-1 gap-3">
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                            Drill above floor [cm]
+                          </Label>
+                          <Input
+                            value={result.drillAboveFloor.toFixed(1)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                            Drilling depth [cm]
+                          </Label>
+                          <Input
+                            value={result.drillingDepth.toFixed(2)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                            Place packer at depth [cm]
+                          </Label>
+                          <Input
+                            value={result.packerDepth.toFixed(2)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  ))}
+                </div>
 
-            {/* DRILLING INTO THE FLOOR Section */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
-                DRILLING INTO THE FLOOR
-              </h3>
-              
-              <div className="space-y-4">
-                {floorResults.map((result, index) => (
-                  <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Move away from the wall [cm]
-                        </Label>
-                        <Input
-                          value={result.moveAwayFromWall.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Drill hole angle [°]
-                        </Label>
-                        <Input
-                          value={result.drillAngle.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Drilling depth [cm]
-                        </Label>
-                        <Input
-                          value={result.drillingDepth.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
-                          Place packer at depth [cm]
-                        </Label>
-                        <Input
-                          value={result.packerDepth.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
+                {/* DRILLING INTO THE FLOOR Section */}
+                <div className="space-y-4">
+                  <h4 className="text-md font-semibold text-gray-900 mb-3">DRILLING INTO THE FLOOR</h4>
+                  {floorResults.map((result, index) => (
+                    <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                      <h5 className="text-sm font-medium text-gray-900 mb-3">Angle {result.drillAngle}°</h5>
+                      <div className="grid grid-cols-1 gap-3">
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                            Move away from the wall [cm]
+                          </Label>
+                          <Input
+                            value={result.moveAwayFromWall.toFixed(2)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                            Drilling depth [cm]
+                          </Label>
+                          <Input
+                            value={result.drillingDepth.toFixed(2)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
+                        <div className="flex flex-col h-16">
+                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                            Place packer at depth [cm]
+                          </Label>
+                          <Input
+                            value={result.packerDepth.toFixed(2)}
+                            readOnly
+                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 

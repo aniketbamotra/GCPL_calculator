@@ -94,126 +94,127 @@ export function DrillingCracksCalculator() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Thickness of construction */}
-              <div className="flex flex-col h-20">
-                <Label htmlFor="thickness" className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Thickness of construction [cm]
-                </Label>
-                <Input
-                  id="thickness"
-                  type="number"
-                  value={thickness}
-                  onChange={(e) => setThickness(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                  placeholder="Np. 10"
-                />
+            {/* Main Layout: Inputs Left, Outputs Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Left Side - Input Fields */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
+                  Input Parameters
+                </h3>
+                
+                {/* Thickness of construction */}
+                <div className="flex flex-col h-20">
+                  <Label htmlFor="thickness" className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Thickness of construction [cm]
+                  </Label>
+                  <Input
+                    id="thickness"
+                    type="number"
+                    value={thickness}
+                    onChange={(e) => setThickness(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="Np. 10"
+                  />
+                </div>
+
+                {/* How much to deepen */}
+                <div className="flex flex-col h-20">
+                  <Label htmlFor="deepen" className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    How much to deepen the hole from the crack cut to the selection [%]
+                  </Label>
+                  <Select value={deepenPercentage} onValueChange={setDeepenPercentage}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="20">20%</SelectItem>
+                      <SelectItem value="30">30%</SelectItem>
+                      <SelectItem value="40">40%</SelectItem>
+                      <SelectItem value="50">50%</SelectItem>
+                      <SelectItem value="60">60%</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Packer diameter */}
+                <div className="flex flex-col h-20">
+                  <Label htmlFor="packer" className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Packer diameter [mm]
+                  </Label>
+                  <Select value={packerDiameter} onValueChange={setPackerDiameter}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="6">6</SelectItem>
+                      <SelectItem value="8">8</SelectItem>
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="12">12</SelectItem>
+                      <SelectItem value="14">14</SelectItem>
+                      <SelectItem value="16">16</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Crack cut percentage */}
+                <div className="flex flex-col h-20">
+                  <Label htmlFor="crackCut" className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Crack cut in % of wall thickness of choice: [ 50% | 40% | 30 % ]
+                  </Label>
+                  <Select value={crackCutPercentage} onValueChange={setCrackCutPercentage}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="30">30</SelectItem>
+                      <SelectItem value="40">40</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              {/* How much to deepen */}
-              <div className="flex flex-col h-20">
-                <Label htmlFor="deepen" className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  How much to deepen the hole from the crack cut to the selection [%]
-                </Label>
-                <Select value={deepenPercentage} onValueChange={setDeepenPercentage}>
-                  <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="20">20%</SelectItem>
-                    <SelectItem value="30">30%</SelectItem>
-                    <SelectItem value="40">40%</SelectItem>
-                    <SelectItem value="50">50%</SelectItem>
-                    <SelectItem value="60">60%</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Packer diameter */}
-              <div className="flex flex-col h-20">
-                <Label htmlFor="packer" className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Packer diameter [mm]
-                </Label>
-                <Select value={packerDiameter} onValueChange={setPackerDiameter}>
-                  <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="6">6</SelectItem>
-                    <SelectItem value="8">8</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="12">12</SelectItem>
-                    <SelectItem value="14">14</SelectItem>
-                    <SelectItem value="16">16</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Crack cut percentage */}
-              <div className="flex flex-col h-20">
-                <Label htmlFor="crackCut" className="text-gray-700 font-medium text-sm leading-tight mb-2">
-                  Crack cut in % of wall thickness of choice: [ 50% | 40% | 30 % ]
-                </Label>
-                <Select value={crackCutPercentage} onValueChange={setCrackCutPercentage}>
-                  <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="30">30</SelectItem>
-                    <SelectItem value="40">40</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Results Grid */}
-            <div className="space-y-6 mt-8">
-              <div className="border-t border-gray-200 pt-6">
+              {/* Right Side - Output Results */}
+              <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
                   Calculation Results
                 </h3>
-              </div>
-              {drillHoles.map((hole, index) => (
-                <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="flex flex-col h-16">
-                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from the crack [cm]</Label>
-                      <Input
-                        value={hole.distance.toFixed(1)}
-                        readOnly
-                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                      />
-                    </div>
-                    <div className="flex flex-col h-16">
-                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Drill hole angle [°]</Label>
-                      <Input
-                        value={hole.angle}
-                        readOnly
-                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                      />
-                    </div>
-                    <div className="flex flex-col h-16">
-                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Drilling depth [cm]</Label>
-                      <Input
-                        value={hole.depth.toFixed(2)}
-                        readOnly
-                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                      />
-                    </div>
-                    <div className="flex flex-col h-16">
-                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Filling the hole with resin [ml]</Label>
-                      <Input
-                        value={hole.resinVolume.toFixed(1)}
-                        readOnly
-                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                      />
+                
+                {drillHoles.map((hole, index) => (
+                  <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                    <h4 className="text-md font-medium text-gray-900 mb-3">Angle {hole.angle}°</h4>
+                    <div className="grid grid-cols-1 gap-4">
+                      <div className="flex flex-col h-16">
+                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from the crack [cm]</Label>
+                        <Input
+                          value={hole.distance.toFixed(1)}
+                          readOnly
+                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                        />
+                      </div>
+                      <div className="flex flex-col h-16">
+                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Drilling depth [cm]</Label>
+                        <Input
+                          value={hole.depth.toFixed(2)}
+                          readOnly
+                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                        />
+                      </div>
+                      <div className="flex flex-col h-16">
+                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Filling the hole with resin [ml]</Label>
+                        <Input
+                          value={hole.resinVolume.toFixed(1)}
+                          readOnly
+                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             {/* Information Section */}
