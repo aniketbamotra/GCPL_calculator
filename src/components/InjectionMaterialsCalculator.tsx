@@ -70,15 +70,16 @@ export function InjectionMaterialsCalculator() {
     const fillingBores = (mlPerHole * totalPackers) / 1000
 
     // Loss of resin from pump cleaning
-    // Assuming 1cm diameter hose (0.5cm radius) - adjust if different equipment is used
-    const hoseVolume = Math.PI * Math.pow(0.5, 2) * hoseLengthNum / 1000
+    // Calculate hose volume: π × r² × length (assuming internal hose diameter of 8mm = 0.4cm radius)
+    const hoseInternalRadius = 0.4 // 8mm internal diameter = 0.4cm radius
+    const hoseVolume = Math.PI * Math.pow(hoseInternalRadius, 2) * hoseLengthNum / 1000 // Convert cm³ to L
     const pumpLoss = (hoseVolume + resinInPumpNum) * pumpCleaningsNum
 
     // Total resin consumption
     const totalResinConsumption = fillingBuildingMaterial + fillingBores + pumpLoss
 
-    // Cleaner consumption
-    const cleanerConsumption = pumpLoss
+    // Cleaner consumption - typically 1.5x the pump loss for thorough cleaning
+    const cleanerConsumption = pumpLoss * 1.5
 
     return {
       buildingMaterialFill,

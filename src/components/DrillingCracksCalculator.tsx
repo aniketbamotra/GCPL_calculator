@@ -55,9 +55,8 @@ export function DrillingCracksCalculator() {
     const totalDrillingDepth = targetDepth / Math.sin(angleRad)
     
     // Calculate horizontal distance from crack
-    // Based on pattern analysis, there's a scaling factor of approximately 0.77
-    // This might be related to the specific drilling geometry for crack intersection
-    const distanceFromCrack = (targetDepth / Math.tan(angleRad)) * 0.77
+    // Standard trigonometric calculation: distance = target_depth / tan(angle)
+    const distanceFromCrack = targetDepth / Math.tan(angleRad)
     
     // Calculate resin volume (cylinder volume: π * r² * h)
     const radius = packerDia / 2 / 10 // Convert mm to cm

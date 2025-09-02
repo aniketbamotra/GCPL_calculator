@@ -38,7 +38,11 @@ export function PipeCalculator() {
     const culvertVolume = culvertVolumeCm3 / 1000 // Convert cm³ to liters
 
     // Volume to fill = culvert volume - pipe volume (space around the pipe)
-    const volumeToFill = Math.max(0, culvertVolume - pipeVolume)
+    // Use the minimum length to ensure we only calculate the overlapping section
+    const effectiveLength = Math.min(pipeLengthNum, culvertLengthNum)
+    const effectivePipeVolume = Math.PI * Math.pow(pipeRadius, 2) * effectiveLength / 1000
+    const effectiveCulvertVolume = Math.PI * Math.pow(culvertRadius, 2) * effectiveLength / 1000
+    const volumeToFill = Math.max(0, effectiveCulvertVolume - effectivePipeVolume)
 
     return {
       pipeVolume,

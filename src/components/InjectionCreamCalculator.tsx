@@ -16,6 +16,7 @@ export function InjectionCreamCalculator() {
   const [drillDiameter, setDrillDiameter] = useState<string>('12')
   const [holeShortage, setHoleShortage] = useState<string>('3')
   const [holeSpacing] = useState<string>('10.00') // Fixed at 10cm
+  const [validationError, setValidationError] = useState<string>('')
   
   const [results, setResults] = useState<CalculationResults>({
     drillingDepth: 0,
@@ -23,12 +24,37 @@ export function InjectionCreamCalculator() {
     creamConsumptionKg: 0
   })
 
+  const validateHoleShortage = (value: string): boolean => {
+    const num = parseFloat(value)
+    if (isNaN(num) || num < 2 || num > 4) {
+      setValidationError('Injection hole shortage must be between 2-4 cm')
+      return false
+    }
+    setValidationError('')
+    return true
+  }
+
+  const handleHoleShortageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setHoleShortage(value)
+    if (value !== '') {
+      validateHoleShortage(value)
+    } else {
+      setValidationError('')
+    }
+  }
+
   const calculateResults = (): CalculationResults => {
     const wallThicknessNum = parseFloat(wallThickness) || 0
     const wallLengthNum = parseFloat(wallLength) || 0
     const drillDiameterNum = parseFloat(drillDiameter) || 0
     const holeShortageNum = parseFloat(holeShortage) || 0
     const holeSpacingNum = parseFloat(holeSpacing) || 0
+
+    // Validate hole shortage range
+    if (holeShortageNum < 2 || holeShortageNum > 4) {
+      return { drillingDepth: 0, creamConsumptionL: 0, creamConsumptionKg: 0 }
+    }
 
     // Calculate drilling depth (wall thickness - hole shortage)
     const drillingDepth = wallThicknessNum - holeShortageNum
@@ -46,8 +72,8 @@ export function InjectionCreamCalculator() {
     // Convert to liters (1000 cm³ = 1 L)
     const creamConsumptionL = totalVolume / 1000
 
-    // Convert to kg (assuming cream density of ~0.9 kg/L)
-    const creamDensity = 0.9
+    // Convert to kg (injection cream density is typically ~1.2 kg/L)
+    const creamDensity = 1.2
     const creamConsumptionKg = creamConsumptionL * creamDensity
 
     return {
@@ -140,12 +166,18 @@ export function InjectionCreamCalculator() {
                 <Input
                   type="number"
                   value={holeShortage}
-                  onChange={(e) => setHoleShortage(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                  onChange={handleHoleShortageChange}
+                  className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto ${
+                    validationError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                  }`}
                   placeholder="Np. 3"
                   min="2"
                   max="4"
+                  step="0.1"
                 />
+                {validationError && (
+                  <p className="text-red-500 text-xs mt-1">{validationError}</p>
+                )}
               </div>
 
               {/* Spacing of injection holes */}

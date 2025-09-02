@@ -1,0 +1,29 @@
+Calculator Name,Problem Outputs,New Name
+Drilling Cracks,"Distance from the crack [cm],
+Distance from the crack [cm], 
+Distance from the crack [cm]",
+Consumption Of Injection Materials,"Loss of resin from the pump [L],
+PI-CLEANER (pump cleaner) CONSUMPTION PROGRESS [L]",
+Drilling the Working Joints,"Drill above floor [cm],
+Drill above floor [cm],
+Drill above floor [cm],
+Move away from the wall [cm] (All 3),
+Place so large a packer(Missing)",
+Anchor mortar consumption (Bricks),"Groove depth [mm],
+Mortar [kg] (Wrong)",
+Anchor mortar consumption (Concrete),"Groove depth [mm],
+Mortar [kg] (Wrong)",
+Consumption of injection cream,"Cream consumption [kg]
+Injection hole shorter than wall 2-4cm (range) (When i am putting data that does not fall in the range its not giving any error",
+Calculate volume,All Good,
+Pipe volume,Volume needed to fill the culvert [L],
+Foundation Lifting,"Angle 30- Distance from wall [cm]
+Angle 45- Distance from wall [cm]
+Angle 60- Distance from wall [cm]
+Angle 75- Distance from wall [cm]
+Angle 80- Distance from wall [cm]",
+Converter MPa->BAR,All Good,
+Converter PSI→BAR,All Good,
+Converter GAL→L,Not Correct,
+"Converter Inch->Cm",All Good,
+Converter LB->KG,All Good,

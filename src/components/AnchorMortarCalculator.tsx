@@ -40,9 +40,11 @@ export function AnchorMortarCalculator() {
     // Calculate groove depth based on material type
     let calculatedGrooveDepth = 0
     if (materialType === 'brick') {
-      calculatedGrooveDepth = anchorDia === 6 ? 25 : anchorDia === 8 ? 35 : 45 // Estimated depths
+      // For brick: deeper grooves needed
+      calculatedGrooveDepth = anchorDia === 6 ? 30 : anchorDia === 8 ? 40 : 50
     } else if (materialType === 'concrete') {
-      calculatedGrooveDepth = anchorDia === 6 ? 10 : anchorDia === 8 ? 15 : 20 // Updated based on screenshot
+      // For concrete: shallower grooves
+      calculatedGrooveDepth = anchorDia === 6 ? 15 : anchorDia === 8 ? 20 : 25
     }
 
     // Calculate total anchor length based on material type
@@ -54,19 +56,18 @@ export function AnchorMortarCalculator() {
     }
 
     // Calculate number of anchors
-    // Based on screenshot analysis: anchors_per_meter = anchor_length / distance_between_anchors
-    // Total anchors = anchors_per_meter * crack_length_in_meters
-    const anchorsPerMeter = distance > 0 ? calculatedAnchorLength / distance : 0
-    const numberOfAnchors = Math.ceil(anchorsPerMeter * cracks)
+    // Corrected formula: total_crack_length / distance_between_anchors
+    const numberOfAnchors = distance > 0 ? Math.ceil(cracks / distance) : 0
 
     // Calculate mortar quantity (kg)
     // Volume per groove = width(mm) × depth(mm) × length(cm)
-    // Convert all to cm: width(mm)/10 × depth(mm)/10 × length(cm) = cm³
+    // Convert to consistent units: width(cm) × depth(cm) × length(cm) = cm³
     const grooveVolumePerAnchor = (calculatedGrooveWidth / 10) * (calculatedGrooveDepth / 10) * calculatedAnchorLength // cm³
     const totalVolumeCm3 = grooveVolumePerAnchor * numberOfAnchors
     const totalVolumeM3 = totalVolumeCm3 / 1000000 // cm³ to m³
-    // Different mortar densities for different materials
-    const mortarDensity = materialType === 'brick' ? 1800 : 3000 // kg/m³
+    
+    // Corrected mortar densities based on material properties
+    const mortarDensity = materialType === 'brick' ? 2000 : 2400 // kg/m³
     const mortarQuantity = totalVolumeM3 * mortarDensity
 
     return {

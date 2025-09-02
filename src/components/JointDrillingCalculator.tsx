@@ -8,12 +8,14 @@ interface WallDrillResult {
   drillAboveFloor: number
   drillAngle: number
   drillingDepth: number
+  packerDepth: number
 }
 
 interface FloorDrillResult {
   moveAwayFromWall: number
   drillAngle: number
   drillingDepth: number
+  packerDepth: number
 }
 
 export function JointDrillingCalculator() {
@@ -23,16 +25,16 @@ export function JointDrillingCalculator() {
 
   // Results for drilling into the wall (3 angles)
   const [wallResults, setWallResults] = useState<WallDrillResult[]>([
-    { drillAboveFloor: 0, drillAngle: 30, drillingDepth: 0 },
-    { drillAboveFloor: 0, drillAngle: 45, drillingDepth: 0 },
-    { drillAboveFloor: 0, drillAngle: 60, drillingDepth: 0 }
+    { drillAboveFloor: 0, drillAngle: 30, drillingDepth: 0, packerDepth: 0 },
+    { drillAboveFloor: 0, drillAngle: 45, drillingDepth: 0, packerDepth: 0 },
+    { drillAboveFloor: 0, drillAngle: 60, drillingDepth: 0, packerDepth: 0 }
   ])
 
   // Results for drilling into the floor (3 angles)
   const [floorResults, setFloorResults] = useState<FloorDrillResult[]>([
-    { moveAwayFromWall: 0, drillAngle: 30, drillingDepth: 0 },
-    { moveAwayFromWall: 0, drillAngle: 45, drillingDepth: 0 },
-    { moveAwayFromWall: 0, drillAngle: 60, drillingDepth: 0 }
+    { moveAwayFromWall: 0, drillAngle: 30, drillingDepth: 0, packerDepth: 0 },
+    { moveAwayFromWall: 0, drillAngle: 45, drillingDepth: 0, packerDepth: 0 },
+    { moveAwayFromWall: 0, drillAngle: 60, drillingDepth: 0, packerDepth: 0 }
   ])
 
   const calculateWallDrilling = (angle: number): WallDrillResult => {
@@ -41,7 +43,7 @@ export function JointDrillingCalculator() {
     const drillingPercentageNum = parseFloat(drillingPercentage) || 0
 
     if (wallThicknessNum === 0) {
-      return { drillAboveFloor: 0, drillAngle: angle, drillingDepth: 0 }
+      return { drillAboveFloor: 0, drillAngle: angle, drillingDepth: 0, packerDepth: 0 }
     }
 
     // Calculate the target depth in the wall (as percentage of wall thickness)
@@ -67,10 +69,15 @@ export function JointDrillingCalculator() {
     
     const drillAboveFloor = baseValue + wallEffect + floorEffect
 
+    // Calculate packer depth - the depth where packer should be placed in the foundation wall
+    // This ensures the expanding rubber anchor is in the foundation wall, not the floor
+    const packerDepth = Math.max(0, drillingDepth - (floorThicknessNum * 0.7)) // 70% into foundation wall
+
     return {
       drillAboveFloor: Math.round(drillAboveFloor * 100) / 100,
       drillAngle: angle,
-      drillingDepth: Math.round(drillingDepth * 100) / 100
+      drillingDepth: Math.round(drillingDepth * 100) / 100,
+      packerDepth: Math.round(packerDepth * 100) / 100
     }
   }
 
@@ -80,7 +87,7 @@ export function JointDrillingCalculator() {
     const drillingPercentageNum = parseFloat(drillingPercentage) || 0
 
     if (wallThicknessNum === 0 || floorThicknessNum === 0) {
-      return { moveAwayFromWall: 0, drillAngle: angle, drillingDepth: 0 }
+      return { moveAwayFromWall: 0, drillAngle: angle, drillingDepth: 0, packerDepth: 0 }
     }
 
     // Calculate the target depth in the wall
@@ -95,10 +102,15 @@ export function JointDrillingCalculator() {
     // Distance from wall = total_vertical_distance / tan(angle)
     const moveAwayFromWall = totalVerticalDistance / Math.tan(angleRad)
 
+    // Calculate packer depth for floor drilling
+    // Packer should be positioned in the foundation wall, not in the floor
+    const packerDepth = Math.max(0, drillingDepth - (floorThicknessNum / Math.sin(angleRad)) + (targetDepthInWall * 0.3))
+
     return {
       moveAwayFromWall: Math.round(moveAwayFromWall * 100) / 100,
       drillAngle: angle,
-      drillingDepth: Math.round(drillingDepth * 100) / 100
+      drillingDepth: Math.round(drillingDepth * 100) / 100,
+      packerDepth: Math.round(packerDepth * 100) / 100
     }
   }
 
@@ -186,7 +198,7 @@ export function JointDrillingCalculator() {
               <div className="space-y-4">
                 {wallResults.map((result, index) => (
                   <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div className="flex flex-col h-16">
                         <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
                           Drill above floor [cm]
@@ -217,6 +229,16 @@ export function JointDrillingCalculator() {
                           className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
                         />
                       </div>
+                      <div className="flex flex-col h-16">
+                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                          Place packer at depth [cm]
+                        </Label>
+                        <Input
+                          value={result.packerDepth.toFixed(2)}
+                          readOnly
+                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -233,7 +255,7 @@ export function JointDrillingCalculator() {
               <div className="space-y-4">
                 {floorResults.map((result, index) => (
                   <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div className="flex flex-col h-16">
                         <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
                           Move away from the wall [cm]
@@ -260,6 +282,16 @@ export function JointDrillingCalculator() {
                         </Label>
                         <Input
                           value={result.drillingDepth.toFixed(2)}
+                          readOnly
+                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                        />
+                      </div>
+                      <div className="flex flex-col h-16">
+                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">
+                          Place packer at depth [cm]
+                        </Label>
+                        <Input
+                          value={result.packerDepth.toFixed(2)}
                           readOnly
                           className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
                         />

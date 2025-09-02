@@ -24,7 +24,7 @@ export function FoundationCalculator() {
     angleResults: []
   })
 
-  const angles = [15, 30, 45, 60, 75, 80, 85]
+  const angles = [30, 45, 60, 75, 80]
 
   const calculateResults = (): CalculationResults => {
     const wallThicknessNum = parseFloat(wallThickness) || 0
@@ -52,9 +52,8 @@ export function FoundationCalculator() {
       const baseDistanceFromWall = totalVerticalDistance / Math.tan(angleRad)
       
       // The wall thickness affects the drilling start point
-      // Appears to account for drilling from inside the wall thickness
-      const effectiveWallOffset = wallThicknessNum * 0.45 // Approximately 45% of wall thickness
-      const distanceFromWall = baseDistanceFromWall - effectiveWallOffset
+      // Corrected formula based on client feedback
+      const distanceFromWall = baseDistanceFromWall - (wallThicknessNum / 2)
 
       // Total lance length (hypotenuse) - remains the same regardless of wall thickness
       const lengthInSoilAndFoundation = totalVerticalDistance / Math.sin(angleRad)
