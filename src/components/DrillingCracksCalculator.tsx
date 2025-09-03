@@ -10,33 +10,27 @@ interface CalculationResult {
   resinVolume: number
 }
 
-interface DrillHole {
-  distance: number
-  angle: number
-  depth: number
-  resinVolume: number
-}
-
 export function DrillingCracksCalculator() {
   const [thickness, setThickness] = useState<string>('10')
   const [deepenPercentage, setDeepenPercentage] = useState<string>('30')
   const [packerDiameter, setPackerDiameter] = useState<string>('10')
   const [crackCutPercentage, setCrackCutPercentage] = useState<string>('50')
+  const [drillingAngle, setDrillingAngle] = useState<string>('45')
   
-  // Three drill holes at different angles
-  const [drillHoles, setDrillHoles] = useState<DrillHole[]>([
-    { distance: 0, angle: 30, depth: 0, resinVolume: 0 },
-    { distance: 0, angle: 45, depth: 0, resinVolume: 0 },
-    { distance: 0, angle: 60, depth: 0, resinVolume: 0 }
-  ])
+  const [result, setResult] = useState<CalculationResult>({
+    distanceFromCrack: 0,
+    drillingDepth: 0,
+    resinVolume: 0
+  })
 
-  const calculateDrillHole = (angle: number): CalculationResult => {
+  const calculateDrillHole = (): CalculationResult => {
     const thicknessNum = parseFloat(thickness) || 0
     const deepenPercent = parseFloat(deepenPercentage) || 0
     const packerDia = parseFloat(packerDiameter) || 0
     const crackCutPercent = parseFloat(crackCutPercentage) || 0
+    const angle = parseFloat(drillingAngle) || 45
     
-    if (thicknessNum === 0) {
+    if (thicknessNum === 0 || angle === 0) {
       return { distanceFromCrack: 0, drillingDepth: 0, resinVolume: 0 }
     }
 
@@ -71,17 +65,8 @@ export function DrillingCracksCalculator() {
   }
 
   useEffect(() => {
-    const updatedHoles = drillHoles.map(hole => {
-      const result = calculateDrillHole(hole.angle)
-      return {
-        ...hole,
-        distance: result.distanceFromCrack,
-        depth: result.drillingDepth,
-        resinVolume: result.resinVolume
-      }
-    })
-    setDrillHoles(updatedHoles)
-  }, [thickness, deepenPercentage, packerDiameter, crackCutPercentage])
+    setResult(calculateDrillHole())
+  }, [thickness, deepenPercentage, packerDiameter, crackCutPercentage, drillingAngle])
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -174,6 +159,24 @@ export function DrillingCracksCalculator() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {/* Drilling Angle - New Input Field */}
+                <div className="flex flex-col h-20">
+                  <Label htmlFor="drillingAngle" className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Drilling angle [°]
+                  </Label>
+                  <Input
+                    id="drillingAngle"
+                    type="number"
+                    value={drillingAngle}
+                    onChange={(e) => setDrillingAngle(e.target.value)}
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
+                    placeholder="e.g. 45"
+                    min="15"
+                    max="75"
+                    step="0.1"
+                  />
+                </div>
               </div>
 
               {/* Right Side - Output Results */}
@@ -183,37 +186,48 @@ export function DrillingCracksCalculator() {
                   Calculation Results
                 </h3>
                 
-                {drillHoles.map((hole, index) => (
-                  <div key={index} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                    <h4 className="text-md font-medium text-gray-900 mb-3">Angle {hole.angle}°</h4>
-                    <div className="grid grid-cols-1 gap-4">
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from the crack [cm]</Label>
-                        <Input
-                          value={hole.distance.toFixed(1)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Drilling depth [cm]</Label>
-                        <Input
-                          value={hole.depth.toFixed(2)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
-                      <div className="flex flex-col h-16">
-                        <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Filling the hole with resin [ml]</Label>
-                        <Input
-                          value={hole.resinVolume.toFixed(1)}
-                          readOnly
-                          className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                        />
-                      </div>
+                <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Drilling Results for {drillingAngle}°</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from the crack [cm]</Label>
+                      <Input
+                        value={result.distanceFromCrack.toFixed(1)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Drilling depth [cm]</Label>
+                      <Input
+                        value={result.drillingDepth.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Filling the hole with resin [ml]</Label>
+                      <Input
+                        value={result.resinVolume.toFixed(1)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
                     </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Summary Results */}
+                <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Summary</h4>
+                  <div className="space-y-2">
+                    <p className="text-gray-700 text-sm">
+                      <strong>Angle:</strong> {drillingAngle}° | <strong>Distance:</strong> {result.distanceFromCrack.toFixed(1)} cm
+                    </p>
+                    <p className="text-gray-700 text-sm">
+                      <strong>Depth:</strong> {result.drillingDepth.toFixed(2)} cm | <strong>Resin:</strong> {result.resinVolume.toFixed(1)} ml
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -233,9 +247,9 @@ export function DrillingCracksCalculator() {
                 <p className="text-gray-800 text-sm font-medium flex items-start">
                   <span className="text-green-accent-600 mr-2">💡</span>
                   <span>
-                    <strong>Practical Tip:</strong> Test different drilling points (50%, 40%, 30%). Not all cracks penetrate 
-                    the entire structure. Performing a test injection helps evaluate the depth and reach of the 
-                    crack before the main injection process.
+                    <strong>Practical Tip:</strong> Test different drilling points (50%, 40%, 30%) and angles (30°-75°). 
+                    Not all cracks penetrate the entire structure. Performing a test injection helps evaluate the 
+                    depth and reach of the crack before the main injection process.
                   </span>
                 </p>
               </div>
