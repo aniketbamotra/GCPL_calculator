@@ -160,22 +160,22 @@ export function DrillingCracksCalculator() {
                   </Select>
                 </div>
 
-                {/* Drilling Angle - New Input Field */}
+                {/* Drilling Angle - Select Field */}
                 <div className="flex flex-col h-20">
                   <Label htmlFor="drillingAngle" className="text-gray-700 font-medium text-sm leading-tight mb-2">
                     Drilling angle [°]
                   </Label>
-                  <Input
-                    id="drillingAngle"
-                    type="number"
-                    value={drillingAngle}
-                    onChange={(e) => setDrillingAngle(e.target.value)}
-                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto"
-                    placeholder="e.g. 45"
-                    min="15"
-                    max="75"
-                    step="0.1"
-                  />
+                  <Select value={drillingAngle} onValueChange={setDrillingAngle}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="30">30°</SelectItem>
+                      <SelectItem value="45">45°</SelectItem>
+                      <SelectItem value="60">60°</SelectItem>
+                      <SelectItem value="90">90°</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
