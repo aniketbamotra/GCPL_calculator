@@ -131,7 +131,7 @@ export function JointDrillingCalculator() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="w-full">
-        <Card className="bg-white border-gray-200 shadow-sm">
+        <Card className="bg-white border-gray-200 shadow-sm overflow-visible">
           <CardHeader className="border-b border-gray-100">
             <CardTitle className="text-2xl text-gray-900 flex items-center">
               <div className="w-3 h-3 bg-green-accent-500 rounded-full mr-3"></div>
@@ -143,7 +143,7 @@ export function JointDrillingCalculator() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
               {/* Left Side - Input Fields */}
-              <div className="space-y-6 sticky top-6">
+              <div className="space-y-6 sticky top-6 self-start">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
                   Input Parameters
