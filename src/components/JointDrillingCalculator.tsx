@@ -143,7 +143,7 @@ export function JointDrillingCalculator() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
               {/* Left Side - Input Fields */}
-              <div className="space-y-6">
+              <div className="space-y-6 sticky top-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
                   Input Parameters
