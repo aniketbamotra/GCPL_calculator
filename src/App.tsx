@@ -28,7 +28,7 @@ function Navigation() {
           
           <div className="flex items-center">
             <a
-              href="https://gcpl.com"
+              href="https://geoconstech.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-green-accent-700 text-sm font-medium transition-colors flex items-center space-x-1"
@@ -80,7 +80,7 @@ function HomeBanner() {
               </svg>
             </Link>
             <a
-              href="https://gcpl.com"
+              href="https://geoconstech.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="group border-2 border-white text-white hover:bg-white hover:text-gray-900 px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
