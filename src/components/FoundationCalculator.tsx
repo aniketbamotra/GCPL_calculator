@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-interface AngleResult {
+interface CalculationResult {
   angle: number
   distanceFromWall: number
   lengthInSoilAndFoundation: number
@@ -11,79 +12,75 @@ interface AngleResult {
   lengthInGround: number
 }
 
-interface CalculationResults {
-  angleResults: AngleResult[]
-}
-
 export function FoundationCalculator() {
   const [wallThickness, setWallThickness] = useState<string>('')
   const [distanceToFoundation, setDistanceToFoundation] = useState<string>('')
   const [depthUnderFoundation, setDepthUnderFoundation] = useState<string>('')
+  const [selectedAngle, setSelectedAngle] = useState<string>('45')
   
-  const [results, setResults] = useState<CalculationResults>({
-    angleResults: []
+  const [result, setResult] = useState<CalculationResult>({
+    angle: 45,
+    distanceFromWall: 0,
+    lengthInSoilAndFoundation: 0,
+    lengthInFoundation: 0,
+    lengthInGround: 0
   })
 
-  const angles = [30, 45, 60, 75, 80]
-
-  const calculateResults = (): CalculationResults => {
+  const calculateResult = (): CalculationResult => {
     const wallThicknessNum = parseFloat(wallThickness) || 0
     const distanceToFoundationNum = parseFloat(distanceToFoundation) || 0
     const depthUnderFoundationNum = parseFloat(depthUnderFoundation) || 0
+    const angle = parseFloat(selectedAngle) || 45
 
-    const angleResults: AngleResult[] = angles.map(angle => {
-      if (wallThicknessNum === 0 || distanceToFoundationNum === 0 || depthUnderFoundationNum === 0) {
-        return {
-          angle,
-          distanceFromWall: 0,
-          lengthInSoilAndFoundation: 0,
-          lengthInFoundation: 0,
-          lengthInGround: 0
-        }
-      }
-
-      const angleRad = (angle * Math.PI) / 180
-
-      // Total vertical distance from drilling point to target under foundation
-      const totalVerticalDistance = distanceToFoundationNum + depthUnderFoundationNum
-
-      // Distance from wall calculation - complex geometric relationship
-      // Based on analysis of multiple test cases from screenshots
-      const baseDistanceFromWall = totalVerticalDistance / Math.tan(angleRad)
-      
-      // The wall thickness affects the drilling start point
-      // Corrected formula based on client feedback
-      const distanceFromWall = baseDistanceFromWall - (wallThicknessNum / 2)
-
-      // Total lance length (hypotenuse) - remains the same regardless of wall thickness
-      const lengthInSoilAndFoundation = totalVerticalDistance / Math.sin(angleRad)
-
-      // Length in foundation (from surface to bottom of foundation) - remains the same
-      const lengthInFoundation = distanceToFoundationNum / Math.sin(angleRad)
-
-      // Length in ground (in soil under foundation) - remains the same
-      const lengthInGround = depthUnderFoundationNum / Math.sin(angleRad)
-
+    if (wallThicknessNum === 0 || distanceToFoundationNum === 0 || depthUnderFoundationNum === 0) {
       return {
         angle,
-        distanceFromWall,
-        lengthInSoilAndFoundation,
-        lengthInFoundation,
-        lengthInGround
+        distanceFromWall: 0,
+        lengthInSoilAndFoundation: 0,
+        lengthInFoundation: 0,
+        lengthInGround: 0
       }
-    })
+    }
 
-    return { angleResults }
+    const angleRad = (angle * Math.PI) / 180
+
+    // Total vertical distance from drilling point to target under foundation
+    const totalVerticalDistance = distanceToFoundationNum + depthUnderFoundationNum
+
+    // Distance from wall calculation - complex geometric relationship
+    // Based on analysis of multiple test cases from screenshots
+    const baseDistanceFromWall = totalVerticalDistance / Math.tan(angleRad)
+    
+    // The wall thickness affects the drilling start point
+    // Corrected formula based on client feedback
+    const distanceFromWall = baseDistanceFromWall - (wallThicknessNum / 2)
+
+    // Total lance length (hypotenuse) - remains the same regardless of wall thickness
+    const lengthInSoilAndFoundation = totalVerticalDistance / Math.sin(angleRad)
+
+    // Length in foundation (from surface to bottom of foundation) - remains the same
+    const lengthInFoundation = distanceToFoundationNum / Math.sin(angleRad)
+
+    // Length in ground (in soil under foundation) - remains the same
+    const lengthInGround = depthUnderFoundationNum / Math.sin(angleRad)
+
+    return {
+      angle,
+      distanceFromWall,
+      lengthInSoilAndFoundation,
+      lengthInFoundation,
+      lengthInGround
+    }
   }
 
   useEffect(() => {
-    setResults(calculateResults())
-  }, [wallThickness, distanceToFoundation, depthUnderFoundation])
+    setResult(calculateResult())
+  }, [wallThickness, distanceToFoundation, depthUnderFoundation, selectedAngle])
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="w-full">
-        <Card className="bg-white border-gray-200 shadow-sm overflow-visible">
+        <Card className="bg-white border-gray-200 shadow-sm">
           <CardHeader className="border-b border-gray-100">
             <CardTitle className="text-2xl text-gray-900 flex items-center">
               <div className="w-3 h-3 bg-green-accent-500 rounded-full mr-3"></div>
@@ -95,7 +92,7 @@ export function FoundationCalculator() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
               {/* Left Side - Input Fields */}
-              <div className="space-y-6 sticky top-6 self-start">
+              <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <div className="w-2 h-2 bg-green-accent-500 rounded-full mr-2"></div>
                   Input Parameters
@@ -145,6 +142,25 @@ export function FoundationCalculator() {
                     step="0.01"
                   />
                 </div>
+
+                {/* Drilling Angle Select Field */}
+                <div className="flex flex-col h-20">
+                  <Label className="text-gray-700 font-medium text-sm leading-tight mb-2">
+                    Drilling angle [°]
+                  </Label>
+                  <Select value={selectedAngle} onValueChange={setSelectedAngle}>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-green-accent-500 focus:ring-green-accent-500 mt-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="30">30°</SelectItem>
+                      <SelectItem value="45">45°</SelectItem>
+                      <SelectItem value="60">60°</SelectItem>
+                      <SelectItem value="75">75°</SelectItem>
+                      <SelectItem value="80">80°</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               {/* Right Side - Output Results */}
@@ -154,61 +170,57 @@ export function FoundationCalculator() {
                   Calculation Results
                 </h3>
                 
-                {/* Results for each angle */}
-                <div className="space-y-4">
-                  {results.angleResults.map((result) => (
-                    <div key={result.angle} className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
-                      <h4 className="text-md font-medium text-gray-900 mb-3">Angle {result.angle}°</h4>
-                      <div className="space-y-3">
-                        <div className="flex flex-col h-16">
-                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from wall [cm]</Label>
-                          <Input
-                            value={result.distanceFromWall.toFixed(1)}
-                            readOnly
-                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                          />
-                        </div>
-                        <div className="flex flex-col h-16">
-                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Length of lance in soil and foundation</Label>
-                          <Input
-                            value={result.lengthInSoilAndFoundation.toFixed(1)}
-                            readOnly
-                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                          />
-                        </div>
-                        <div className="flex flex-col h-16">
-                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Lance length in the foundation</Label>
-                          <Input
-                            value={result.lengthInFoundation.toFixed(1)}
-                            readOnly
-                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                          />
-                        </div>
-                        <div className="flex flex-col h-16">
-                          <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Length of lance in the ground</Label>
-                          <Input
-                            value={result.lengthInGround.toFixed(1)}
-                            readOnly
-                            className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
-                          />
-                        </div>
-                      </div>
+                {/* Single Angle Result */}
+                <div className="bg-green-accent-50 p-4 rounded-lg border border-green-accent-200">
+                  <h4 className="text-md font-medium text-gray-900 mb-3">Results for {result.angle}° Angle</h4>
+                  <div className="space-y-4">
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Distance from wall [cm]</Label>
+                      <Input
+                        value={result.distanceFromWall.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
                     </div>
-                  ))}
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Total lance length in soil and foundation [cm]</Label>
+                      <Input
+                        value={result.lengthInSoilAndFoundation.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Lance length in foundation [cm]</Label>
+                      <Input
+                        value={result.lengthInFoundation.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                    <div className="flex flex-col h-16">
+                      <Label className="text-gray-700 font-medium text-xs leading-tight mb-2">Lance length in ground [cm]</Label>
+                      <Input
+                        value={result.lengthInGround.toFixed(2)}
+                        readOnly
+                        className="bg-white border-green-accent-300 text-gray-900 font-medium mt-auto"
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                {/* Summary */}
+                {/* Foundation Parameters Summary */}
                 <div className="bg-green-accent-100 p-4 rounded-lg border border-green-accent-300">
                   <h4 className="text-md font-medium text-gray-900 mb-3">Foundation Parameters Summary</h4>
                   <div className="space-y-2">
                     <p className="text-gray-700 text-sm">
-                      <strong>Wall thickness:</strong> {wallThickness || '0'} cm
+                      <strong>Wall Thickness:</strong> {wallThickness || '0'} cm | <strong>Angle:</strong> {result.angle}°
                     </p>
                     <p className="text-gray-700 text-sm">
-                      <strong>Distance to foundation:</strong> {distanceToFoundation || '0'} cm
+                      <strong>Foundation Distance:</strong> {distanceToFoundation || '0'} cm | <strong>Lance Depth:</strong> {depthUnderFoundation || '0'} cm
                     </p>
                     <p className="text-gray-700 text-sm">
-                      <strong>Depth under foundation:</strong> {depthUnderFoundation || '0'} cm
+                      <strong>Distance from Wall:</strong> {result.distanceFromWall.toFixed(2)} cm | <strong>Total Lance:</strong> {result.lengthInSoilAndFoundation.toFixed(2)} cm
                     </p>
                   </div>
                 </div>
@@ -219,24 +231,46 @@ export function FoundationCalculator() {
             <div className="mt-8 p-6 bg-green-accent-50 rounded-lg border border-green-accent-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                 <div className="w-2 h-2 bg-green-accent-600 rounded-full mr-2"></div>
-                About the Foundation Stabilization Calculator
+                About the Foundation Stabilization and Lifting Calculator
               </h3>
               <p className="text-gray-700 text-sm leading-relaxed mb-4">
-                The Foundation Stabilization and Lifting Calculator is designed for accurately planning 
-                the drilling and injection process when reinforcing and stabilizing foundations. It provides 
-                precise calculations for drilling angles, distances, and lance lengths needed for optimal 
-                foundation underpinning projects.
+                The Foundation Stabilization and Lifting Calculator is an advanced tool designed for accurately 
+                planning the drilling and injection process, particularly when reinforcing and stabilizing 
+                foundations with products like ResinBau GeoPolymer.55, SoilConsolid, and others.
               </p>
-              <div className="p-4 bg-white rounded border-l-4 border-green-accent-500 shadow-sm">
-                <p className="text-gray-800 text-sm font-medium flex items-start">
-                  <span className="text-green-accent-600 mr-2">💡</span>
-                  <span>
-                    <strong>Practical Tips:</strong> Accurately measure foundation geometry and wall thickness. 
-                    Select the right drilling angle based on site conditions. Consider soil conditions when 
-                    choosing lance depth. Plan multi-point injections for larger projects and perform test 
-                    injections to validate measurements.
-                  </span>
-                </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div className="p-4 bg-white rounded border-l-4 border-green-accent-500 shadow-sm">
+                  <p className="text-gray-800 text-sm font-medium flex items-start">
+                    <span className="text-green-accent-600 mr-2">🎯</span>
+                    <span>
+                      <strong>Precision:</strong> Eliminates guesswork by providing exact drilling and lance length parameters.
+                    </span>
+                  </p>
+                </div>
+                <div className="p-4 bg-white rounded border-l-4 border-green-accent-500 shadow-sm">
+                  <p className="text-gray-800 text-sm font-medium flex items-start">
+                    <span className="text-green-accent-600 mr-2">⚙️</span>
+                    <span>
+                      <strong>Versatility:</strong> Supports various drilling angles and lance depths tailored to soil conditions.
+                    </span>
+                  </p>
+                </div>
+                <div className="p-4 bg-white rounded border-l-4 border-green-accent-500 shadow-sm">
+                  <p className="text-gray-800 text-sm font-medium flex items-start">
+                    <span className="text-green-accent-600 mr-2">⚡</span>
+                    <span>
+                      <strong>Efficiency:</strong> Optimizes the injection process, saving time and materials.
+                    </span>
+                  </p>
+                </div>
+                <div className="p-4 bg-white rounded border-l-4 border-green-accent-500 shadow-sm">
+                  <p className="text-gray-800 text-sm font-medium flex items-start">
+                    <span className="text-green-accent-600 mr-2">🔄</span>
+                    <span>
+                      <strong>Repeatability:</strong> Precisely planned injections minimize the risk of destabilizing the foundation.
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
           </CardContent>
