@@ -663,12 +663,13 @@ function Home() {
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
               Convert pressure units between Megapascals (MPa) and Bar with precise calculations.
-            </p>
-            <div className="flex items-center text-green-accent-600 font-semibold group-hover:text-green-accent-700 transition-colors">
-              <span>Open Converter</span>
-              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              </p>
+              <div className="flex items-center text-green-accent-600 font-bold group-hover:text-green-accent-700 transition-colors">
+                <span>Open Converter</span>
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </div>
           </Link>
 
@@ -693,12 +694,13 @@ function Home() {
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
               Convert pressure units between Pounds per Square Inch (PSI) and Bar.
-            </p>
-            <div className="flex items-center text-green-accent-600 font-semibold group-hover:text-green-accent-700 transition-colors">
-              <span>Open Converter</span>
-              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              </p>
+              <div className="flex items-center text-green-accent-600 font-bold group-hover:text-green-accent-700 transition-colors">
+                <span>Open Converter</span>
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </div>
           </Link>
 
@@ -723,12 +725,13 @@ function Home() {
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
               Convert volume units between US Gallons (GAL) and Liters (L).
-            </p>
-            <div className="flex items-center text-green-accent-600 font-semibold group-hover:text-green-accent-700 transition-colors">
-              <span>Open Converter</span>
-              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              </p>
+              <div className="flex items-center text-green-accent-600 font-bold group-hover:text-green-accent-700 transition-colors">
+                <span>Open Converter</span>
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </div>
           </Link>
 
@@ -753,12 +756,13 @@ function Home() {
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
               Convert length units between Inches and Centimeters (CM).
-            </p>
-            <div className="flex items-center text-green-accent-600 font-semibold group-hover:text-green-accent-700 transition-colors">
-              <span>Open Converter</span>
-              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              </p>
+              <div className="flex items-center text-green-accent-600 font-bold group-hover:text-green-accent-700 transition-colors">
+                <span>Open Converter</span>
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </div>
           </Link>
 
@@ -783,16 +787,18 @@ function Home() {
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
               Convert weight units between Pounds (LB) and Kilograms (KG).
-            </p>
-            <div className="flex items-center text-green-accent-600 font-semibold group-hover:text-green-accent-700 transition-colors">
-              <span>Open Converter</span>
-              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              </p>
+              <div className="flex items-center text-green-accent-600 font-bold group-hover:text-green-accent-700 transition-colors">
+                <span>Open Converter</span>
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </div>
           </Link>
         </div>
       </div>
+        </div>
       </div>
     </div>
   )
